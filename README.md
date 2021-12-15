@@ -19,6 +19,10 @@ These data collected should be presented as part of the data visualisation modul
 **Software Architecture Design**
 - TBD
 
+**TCP/IP Stack Layers**
+![Capstone - Communication (OSI) Protocol Layer](https://user-images.githubusercontent.com/57914467/146119004-33c553d4-d08a-4908-9b23-2a54991ee555.jpeg)
+
+
 **High level process flowchart**
 ![HighLevelSwimLane](https://user-images.githubusercontent.com/57914467/146107998-1ab472d3-36fa-4026-bfd5-eba3c4b3079e.jpeg)
 
