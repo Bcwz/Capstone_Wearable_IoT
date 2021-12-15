@@ -11,12 +11,12 @@
 These data collected should be presented as part of the data visualisation module in the back-end portal.
 
 **Software**:
-1. Python - 3.10.1
+1. Python - Version 3.10.1
 
 **Libraries used**
 1. TBD
 
-**Software Design & Architecture**
+**Software Architecture Design**
 - TBD
 
 **High level process flowchart**
@@ -28,11 +28,15 @@ These data collected should be presented as part of the data visualisation modul
 1. Raspberry Pi 3b+
 2. Jumper cables (Male to Female, Female to Female)
 3. DHT11
-4. Peltier Module 
+4. Peltier Module (5V 1A as Raspberry Pi maximum power output is 5V)
 5. Side Exhaust Fans
 6. Heatsink
 7. Thermal Tape
 8. Jacket
+
+**Hardware Architecture Design**
+![Hardware Architecture](https://user-images.githubusercontent.com/57914467/146115213-5405eb65-aaaa-42a7-87e5-37cfe4cd8d74.jpeg)
+
 
 **Hardware Technical Information**
 1. Raspberry Pi 3b+ - https://www.raspberrypi.com/products/raspberry-pi-3-model-b-plus/
@@ -43,7 +47,7 @@ These data collected should be presented as part of the data visualisation modul
 3. DHT11 - https://www.adafruit.com/product/386
 - Purpose: To real-time data such as the wearer body temperature (°C) and environment humidity (%).
 - Datasheet: https://www.mouser.com/datasheet/2/737/dht-932870.pdf
-4. Peltier Module - https://www.mouser.sg/ProductDetail/426-FIT0826
+4. Peltier Module (5V 1A) - https://www.mouser.sg/ProductDetail/426-FIT0826
 - Purpose: To create a cool air supply.
 - Datasheet:https://www.mouser.sg/new/dfrobot/dfrobot-electric-cooler-module-5v-1a/
 5. Side Exhaust Fans - https://www.amazon.sg/gp/product/B07V2KVQB7/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1
