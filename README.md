@@ -20,7 +20,8 @@ These data collected should be presented as part of the data visualisation modul
 - TBD
 
 **High level process flowchart**
-![HighLevelSwimLane](https://user-images.githubusercontent.com/57914467/146107806-65cd2f56-4bd5-482d-a4b0-a4b6b3951321.jpeg)
+![HighLevelSwimLane](https://user-images.githubusercontent.com/57914467/146107998-1ab472d3-36fa-4026-bfd5-eba3c4b3079e.jpeg)
+
 
 
 **Hardware required**
