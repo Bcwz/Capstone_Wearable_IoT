@@ -20,7 +20,8 @@ These data collected should be presented as part of the data visualisation modul
 - TBD
 
 **High level process flowchart**
-- TBD
+![HighLevelSwimLane](https://user-images.githubusercontent.com/57914467/146107806-65cd2f56-4bd5-482d-a4b0-a4b6b3951321.jpeg)
+
 
 **Hardware required**
 1. Raspberry Pi 3b+
