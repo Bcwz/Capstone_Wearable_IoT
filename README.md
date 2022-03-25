@@ -80,6 +80,9 @@
 >8. Jacket
 >- Purpose: To house all components.
 
+**Dataset**
+>1.Wet Bulb Temperature, Hourly - https://data.gov.sg/dataset/wet-bulb-temperature-hourly?view_id=7ed27d62-730e-4986-8dee-72f1d243583e&resource_id=0195dc7a-2f49-4107-ac7c-3112ca4a09a8
+
 
 **References**
 >[1] “Heat Stress Related Illness,” Centers for Disease Control and Prevention, 06-Jun-2018. [Online]. Available: https://www.cdc.gov/niosh/topics/heatstress/heatrelillness.html#:~:text=When heat stroke occurs, the,emergency treatment is not given.&text=Symptoms of heat stroke include,altered mental status, slurred speech. [Accessed: 26-Nov-2021].
