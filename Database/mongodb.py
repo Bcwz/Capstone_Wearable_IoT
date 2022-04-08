@@ -1,15 +1,13 @@
-from datetime import date, datetime
 import os
 from dotenv import load_dotenv
+from datetime import date, datetime
 from pymongo import MongoClient
 
 class mongoDatabase:
     
-    def insertDatabase(currentDateTime):
-        load_dotenv()
-        URL = os.getenv('MONGODB_BASEURL')
-        client = MongoClient(URL)
-        db = client['Sensor']
-        collection = db['DHT11']
+    def insertDatabase(dbURL,tableName,collectionName, currentDateTime):
+        client = MongoClient(dbURL)
+        db = client[tableName]
+        collection = db[collectionName]
         data = {"dateTime":currentDateTime}
         collection.insert_one(data)
