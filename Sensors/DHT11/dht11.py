@@ -1,7 +1,6 @@
 import time
 import Adafruit_DHT
 
-
 class DHT11:
     def __init__(self,GPIO_pin):
         """Class method for DHT11, takes in GPIO_pin argument"""
@@ -10,16 +9,15 @@ class DHT11:
         self.sensor = Adafruit_DHT.DHT11
         self.GPIO_pin = GPIO_pin
         
-    def temp_hum(self,polling_rate_seconds):
+    def temp_hum(self):
         """Method to return temperature(*C) and humidity (%), takes in one integer/float argument for polling rate in seconds"""
-        while True:
-            humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.GPIO_pin)
-            if humidity is not None and temperature is not None:
-                print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
-                return (temperature,humidity)
-            else:
-                print('Failed to get reading. Try again!')
-            time.sleep(polling_rate_seconds)
+        humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.GPIO_pin)
+        if humidity is not None and temperature is not None:
+            print('Temp={0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
+            return (temperature,humidity)
+        else:
+            print('Failed to get reading. Try again!')
+            
             
     def temp(self,polling_rate_seconds):
         """Method to return temperature(*C), takes in one integer/float argument for polling rate in seconds"""
@@ -42,6 +40,7 @@ class DHT11:
             else:
                 print('Failed to get reading. Try again!')
             time.sleep(polling_rate_seconds)
+            
             
     
 #test = DHT11(24)

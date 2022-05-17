@@ -1,9 +1,21 @@
-from fractions import Fraction
 import numpy
+import subprocess
+
+from fractions import Fraction
+from datetime import datetime
 
 
-class WBGT:
-    
+WBGT_THRESHOLD = 27.0
+TURN_ON_USB = './uhubctl/turnon.sh'
+TURN_OFF_USB = './uhubctl/turnoff.sh'
+
+risk_high_black = 29.0
+risk_high_red = 28.0
+risk_medium_yellow = 27.0
+risk_low_green = 26.0 
+risk_low_white = 25.9 
+
+class WBGT:    
     def calculate(temperature, humidity):
         # Tw = wet-bulb temperature
         # T = current temperature
@@ -14,6 +26,18 @@ class WBGT:
 
         # WBGT = 0.7 * Tw + 0.3 * T
         wbgt = 0.7 * tw + 0.3 * temperature
-        #print("WBGT = " + str(wbgt))
-        return wbgt
+        print("WBGT = " + str(wbgt))
         
+        return wbgt
+    
+    def risk_level(wbgt):
+        now = datetime.now()
+        if(wbgt>=risk_high_red):            
+            print("HIGH RISK ALERT", now,"\n")
+            subprocess.call(TURN_ON_USB,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        elif (wbgt>=risk_medium_yellow and wbgt <risk_high_red):
+            print("MEDIUM RISK ALERT",now,"\n")
+            subprocess.call(TURN_ON_USB,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        else:
+            print("LOW RISK ALERT",now,"\n")
+            subprocess.call(TURN_OFF_USB,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
