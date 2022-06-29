@@ -32,10 +32,10 @@ class WBGT:
     
     def risk_level(wbgt):
         now = datetime.now()
-        if(wbgt>=risk_high_red):            
+        if(wbgt>=float(risk_high_red)):            
             print("HIGH RISK ALERT", now,"\n")
             subprocess.call(TURN_ON_USB,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        elif (wbgt>=risk_medium_yellow and wbgt <risk_high_red):
+        elif (wbgt>=float(risk_medium_yellow) and wbgt <float(risk_high_red)):
             print("MEDIUM RISK ALERT",now,"\n")
             subprocess.call(TURN_ON_USB,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         else:

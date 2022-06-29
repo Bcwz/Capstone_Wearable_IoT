@@ -1,12 +1,13 @@
+import os
 import socket
 
 class CONNECTIVITY:
-    def check_connectivity(host, port=53, timeout=3):
+    def check_connectivity(SERVER_IP, SERVER_PORT):
         try:
-            socket.setdefaulttimeout(timeout)
-            socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((SERVER_IP, SERVER_PORT))
             return True
-        except socket.error as ex:
-            print(ex)
+        except Exception as e:
+            print(e)
             return False
 

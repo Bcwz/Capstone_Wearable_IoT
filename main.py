@@ -3,6 +3,7 @@ import random
 import time
 import subprocess
 import atexit
+import requests
 
 from dotenv import load_dotenv
 from datetime import datetime
@@ -17,9 +18,11 @@ load_dotenv()
 MONGODB_URL = os.getenv('MONGODB_BASEURL')
 POLLING_RATE_SECONDS = 2
 data_pin = 24
-SERVER_IP = '172.20.10.6'
-SERVER_PORT = '5000'
 TURN_OFF_USB = './uhubctl/turnoff.sh'
+SERVER_IP = '172.20.10.6'
+SERVER_PORT = 5000
+SERVER_FORECAST_ENDPOINT = 'http://172.20.10.6:5000/forecast'
+SENSOR_DATA_ENDPOINT = 'http://172.20.10.6:5000/sensor_data'
 
 
 def main():
@@ -33,21 +36,23 @@ def main():
             status = CONNECTIVITY.check_connectivity(SERVER_IP,SERVER_PORT)
             
             if(status == True):
-                #TODO Pass in WBGT to ML model to detect and predict if wearer is at risk of heat injuries.
-                #Send Temp, humidity, wbgt to Thingsboard
-                #Thingsboard.post(humidity,temperature, wbgt)
                 wbgt = WBGT.calculate(temperature,humidity)
-                WBGT.risk_level(wbgt)
-                #print("INTERNET TRUE= " + str(wbgt))  
-                pass
+                wbgt_float = float("{:.2f}".format(wbgt))
+                sensor_data = requests.post(SENSOR_DATA_ENDPOINT, json={'sensor_wbgt':wbgt_float})
+                forecast_wbgt = requests.get(SERVER_FORECAST_ENDPOINT)
+                #print("INTERNET TRUE= " + str(wbgt_float))
+                print(forecast_wbgt.json()["forecast_wbgt"])
+                
             else:
                 #Pass in temp & humidity to calculate Wet-Bulb Globe Temperature, using WBGT = 0.7 * Tw + 0.3 * T
                 wbgt = WBGT.calculate(temperature,humidity)
-                WBGT.risk_level(wbgt)
-                #print("INTERNET FALSE = " + str(wbgt))               
+                wbgt_float = float("{:.2f}".format(wbgt))
+                WBGT.risk_level(wbgt_float)
+                print("INTERNET FALSE = " + str(wbgt_float))               
             
             time.sleep(POLLING_RATE_SECONDS)
-        except:
+        except Exception as e:
+            print(e)
             continue
 
 def exit_program():
