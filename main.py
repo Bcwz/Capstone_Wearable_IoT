@@ -17,7 +17,8 @@ load_dotenv()
 MONGODB_URL = os.getenv('MONGODB_BASEURL')
 POLLING_RATE_SECONDS = 2
 data_pin = 24
-GOOGLE_IP = '8.8.8.8'
+SERVER_IP = '172.20.10.6'
+SERVER_PORT = '5000'
 TURN_OFF_USB = './uhubctl/turnoff.sh'
 
 
@@ -29,7 +30,7 @@ def main():
             temperature,humidity = DHT.temp_hum()
            
                         
-            status = CONNECTIVITY.check_connectivity(GOOGLE_IP)
+            status = CONNECTIVITY.check_connectivity(SERVER_IP,SERVER_PORT)
             
             if(status == True):
                 #TODO Pass in WBGT to ML model to detect and predict if wearer is at risk of heat injuries.
