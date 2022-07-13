@@ -26,12 +26,12 @@
 >- TBD
 
 **Protocol Stack**
->![Capstone - Communication (OSI) Protocol Layer](https://user-images.githubusercontent.com/57914467/147015418-cf926ec1-ecd0-472f-9de5-7caace705067.jpeg)
+>![Capstone - Communication (OSI) Protocol Layer](https://user-images.githubusercontent.com/57914467/178656726-3f486bf7-eefb-4441-b992-09d3c7331339.png)
 >
 >The protocol stack diagram illustrates the different layers used for Message Queue Telemetry Transport (MQTT) communication between Thingsboard and the wearable IoT controller (Raspberry Pi 3b+). MQTT protocol is built on top of the TCP/IP stack which enables efficient scalability with millions of IoT devices and support for communication over unreliable networks and allows for optional TLS/SSL message encryption. While MQTT is designed as a lightweight, flexible and efficient protocol, it is able to utilize minimal resources to transmit messages using the Publish/Subscribe model and also able to provide reliable message delivery via the different Quality of Service (QoS) levels (0 = At most once, 1 = At least once, 2 = Exactly once). 
 
 **High level process flowchart**
->![HighLevelSwimLane](https://user-images.githubusercontent.com/57914467/146107998-1ab472d3-36fa-4026-bfd5-eba3c4b3079e.jpeg)
+>![Capstone - High level swim lane](https://user-images.githubusercontent.com/57914467/178658961-8323f1b4-77a6-45bc-8bf2-10236a01551b.png)
 >
 >As the controller (Raspberry Pi 3b+) executes the program, it would gather real-time (polling inverval of 5 seconds) body temperature (°C) and environment humidity (%) readings from the DHT11 sensor placed on the front chest area. These readings are used to determine if the wearer is at risk of having a heatstroke by checking if the reading exceeds a certain threshold (>=40°C [high risk], >=39°C [medium risk], >=38°C [low risk]). 
 >
@@ -50,7 +50,7 @@
 >8. Jacket
 
 **Hardware Architecture Design**
->![Capstone - Hardware Design](https://user-images.githubusercontent.com/57914467/178656326-afebe154-5351-4cc1-98a1-4413d7285ebe.png)
+>![Capstone - Hardware Design](https://user-images.githubusercontent.com/57914467/178659183-6f7424cd-cab0-455c-ba0b-83b2c5422c8e.png)
 >
 > The Raspberry Pi 3b+ will act as the main controller to control the various sensors and hardware and as a MQTT publisher to publish the real-time body temperature (°C) and environment humidity (%) readings to Thingsboard for data visualization and analysis. In order to develop the Minimum viable product (MVP) to demostrate the portability and wearability, the Raspberry Pi 3b+ will rely on a portal power supply to provide power for the whole setup.
 > 
