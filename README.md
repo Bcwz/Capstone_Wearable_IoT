@@ -48,6 +48,7 @@
 >6. Heatsink
 >7. Thermal Tape
 >8. Jacket
+>9. Portable power supply
 
 **Hardware Architecture Design**
 >![Capstone - Hardware Design](https://user-images.githubusercontent.com/57914467/178659183-6f7424cd-cab0-455c-ba0b-83b2c5422c8e.png)
