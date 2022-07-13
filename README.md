@@ -50,7 +50,7 @@
 >8. Jacket
 
 **Hardware Architecture Design**
->![Capstone - Hardware Design](https://user-images.githubusercontent.com/57914467/147022414-25850606-b3f1-4ab1-8f57-488b7ff37946.jpeg)
+>![Capstone - Hardware Design](https://user-images.githubusercontent.com/57914467/178656326-afebe154-5351-4cc1-98a1-4413d7285ebe.png)
 >
 > The Raspberry Pi 3b+ will act as the main controller to control the various sensors and hardware and as a MQTT publisher to publish the real-time body temperature (°C) and environment humidity (%) readings to Thingsboard for data visualization and analysis. In order to develop the Minimum viable product (MVP) to demostrate the portability and wearability, the Raspberry Pi 3b+ will rely on a portal power supply to provide power for the whole setup.
 > 
