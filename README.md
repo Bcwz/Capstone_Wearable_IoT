@@ -53,9 +53,10 @@
 **Hardware Architecture Design**
 >![Capstone - Hardware Design](https://user-images.githubusercontent.com/57914467/178659183-6f7424cd-cab0-455c-ba0b-83b2c5422c8e.png)
 >
-> The Raspberry Pi 3b+ will act as the main controller to control the various sensors and hardware and as a MQTT publisher to publish the real-time body temperature (°C) and environment humidity (%) readings to Thingsboard for data visualization and analysis. In order to develop the Minimum viable product (MVP) to demostrate the portability and wearability, the Raspberry Pi 3b+ will rely on a portal power supply to provide power for the whole setup.
-> 
-> There will be a total of one DHT11 sensor, two 5V, 1A Peltier module and four USB side exhaust fans which requires active management (coding), while there will be a total of four heatsinks and four thermal tapes to faciliate with the heat & cold transfer from the Peltier module. The DHT11 sensor will be utilizing the Pin 17 for 3.3v power,  Pin 20 for ground and Pin 18 (GPIO24) for data transfer. One of the peltier module will be using the Pin 4 for 5V, 1A power & Pin 6 for ground, while the other Peltier module will be using Pin 2 for 5V, 1A power & Pin 14 for ground. Finally, all of the USB side exhaust fans will be controlled using the USB ports.
+> The Raspberry Pi 3b+ will act as the main controller to control the various sensors and hardware and utilises HTTP/HTTPS communication protocol to communicate with a centralised server. In order to develop the Minimum viable product (MVP) to demostrate the portability and wearability, the Raspberry Pi 3b+ will rely on a portal power supply to provide power for the whole setup.
+>There will be a total of one DHT11 sensor, two 5V, 1A Peltier module, four USB side exhaust fans, four thermal tapes and four heatsinks to faciliate with the heat & cold transfer from the Peltier module. The DHT11 sensor will be utilizing the Raspberry Pi’s Pin 17 for 3.3v power, Pin 20 for ground and Pin 18 (GPIO24) for data transfer. One of the peltier module will be using the Pin 4 for 5V, 1A power & Pin 6 for ground, while the other Peltier module will be using Pin 2 for 5V, 1A power & Pin 14 for ground. Finally, all of the USB side exhaust fans will be controlled using the Raspberry Pi’s onboard USB ports.
+
+
 
 **Hardware Technical Information**
 >1. Raspberry Pi 3b+ - https://www.raspberrypi.com/products/raspberry-pi-3-model-b-plus/
