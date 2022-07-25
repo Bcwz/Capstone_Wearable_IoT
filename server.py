@@ -1,29 +1,36 @@
+import multiprocessing
 import pandas as pd
 import json
 import numpy as np
 import math
+import time
+from keras.models import Sequential
+from keras.layers import LSTM
+from keras.layers import Dense
+from keras.layers import RepeatVector
+from keras.layers import TimeDistributed
+from keras.layers import Dropout, LeakyReLU
 from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
 from flask import Flask, request,jsonify
-from sklearn import preprocessing
-from sklearn.decomposition import PCA
-from sklearn.model_selection import train_test_split
 from sklearn import tree
-from sklearn.metrics import accuracy_score
-import numpy as np
-from sklearn import metrics
-from sklearn.tree import DecisionTreeClassifier
  
 
 app = Flask(__name__)
-df = pd.read_csv('.\Machine_Learning\Dataset\server_two-hundred-fourty-second-wbgt.csv')
-current_array = df.to_numpy()
+MONTHS = 1
+NUMBER_OF_DATA_POINT = math.floor(MONTHS * 4 * 7 *24 * (60/2))
+df = pd.read_csv('Machine_Learning\Dataset\hundred-twenty-second-wbgt.csv')
+#current_array = df.to_numpy()
+df_timeseries_mean = df.rolling(window=1).mean()
+current_array = np.array(df_timeseries_mean[-NUMBER_OF_DATA_POINT:])
 
-NUMBER_OF_DAYS =0.5
-NUMBER_OF_DATA_POINT =  math.floor((NUMBER_OF_DAYS * 86400)/240)
+ARIMA_PARAMETERS = (5,1,0)
 
 NUMBER_OF_FORECAST_STEPS = 5
+NUMBER_OF_MODELS = 4
 
-current_array = current_array[len(current_array) - NUMBER_OF_DATA_POINT - 1:]
+#current_array = current_array[len(current_array) - NUMBER_OF_DATA_POINT - 1:]
+#current_array = current_array[:NUMBER_OF_DATA_POINT]
 train_size = math.floor(0.8*NUMBER_OF_DATA_POINT)
 test_size =math.floor(NUMBER_OF_DATA_POINT)
 
@@ -33,6 +40,15 @@ wbt_medium_risk_yellow = 26.0
 wbt_low_risk_green = 25.0
 wbt_low_risk_white =  24.9
 
+# model = Sequential()
+# model.add(LSTM(128, activation='relu', input_shape=(5,1), return_sequences=True))
+# model.add(LSTM(64, activation='relu', return_sequences=False))
+# model.add(RepeatVector(5))
+# model.add(LSTM(64, activation='relu', return_sequences=True))
+# model.add(LSTM(128, activation='relu', return_sequences=True))
+# model.add(TimeDistributed(Dense(1)))
+# model.compile(optimizer='adam', loss='mse')
+    
 
 @app.route("/", methods=['GET'])
 def hello():
@@ -40,9 +56,37 @@ def hello():
 
 @app.route("/forecast", methods=['GET'])
 def return_forecast_data():
-    arima_value = arima()
-    print({'forecast_wbgt' : arima_value.json})
-    return jsonify({'forecast_wbgt' : arima_value.json})
+    arima_return_value = multiprocessing.Value("d", 0.0, lock=False)
+    holt_return_value = multiprocessing.Value("d", 0.0, lock=False)
+    ses_return_value = multiprocessing.Value("d", 0.0, lock=False)
+    # lstm_return_value = multiprocessing.Value("d", 0.0, lock=False)
+    # lstm_value = multiprocessing.Process(target=lstm, args=[lstm_return_value])
+    arima_value = multiprocessing.Process(target=arima, args=[arima_return_value])
+    holt_value = multiprocessing.Process(target=holt, args=[holt_return_value])
+    ses_value = multiprocessing.Process(target=ses, args=[ses_return_value])
+    # lstm_value.start()
+    arima_value.start()
+    holt_value.start()
+    ses_value.start()
+    arima_value.join()
+    holt_value.join()
+    ses_value.join()
+    lstm_value = lstm()
+    # print("ARIMA =  " + str(arima_return_value.value))
+    # print("SES = " + str(ses_return_value.value))
+    # print("HOLT = " + str(holt_return_value.value))
+    print("LSTM = " + str(lstm_value.json))
+
+    arima_predicted =  float(arima_return_value.value)
+    ses_predicted =  float(ses_return_value.value)
+    holt_predicted =  float(holt_return_value.value)
+    lstm_predicted = float(lstm_value.json)
+    
+    average_wbgt = (arima_predicted + ses_predicted+holt_predicted+lstm_predicted ) / NUMBER_OF_MODELS
+    print("AVERAGE = " + str(average_wbgt))
+    #print({'forecast_wbgt' : arima_value.json})
+    return jsonify({'forecast_wbgt' : average_wbgt})
+    
 
 @app.route("/ip", methods=['GET'])
 def my_ip():
@@ -56,12 +100,15 @@ def csv_data():
 @app.route("/sensor_data", methods=['POST'])
 def sensor_data():
     global current_array
+    #print (current_array.shape)
     data = request.json
     print(data["sensor_wbgt"])
     sensor_data = data["sensor_wbgt"]
     update_array = current_array[1:]
     update_array = np.append(update_array,float(sensor_data))
-    current_array = update_array
+    new_array = np.asarray(update_array)
+    current_array = new_array.reshape(len(new_array),1)
+    #print (current_array.shape)
     # df_array = df_array.append(data["sensor_wbgt"])
     #return jsonify(data)
     return f'{current_array}'
@@ -70,20 +117,57 @@ def sensor_data():
 def get_decision_tree():
     data = request.json
     sensor_data = data["sensor_wbgt"]
-    print(data["sensor_wbgt"])
-    decisionTreeLabel = decisionTree(sensor_data)
+    start = time.time()
+    for i in range (20):
+        print("Loop number " + str(i))
+        decisionTreeLabel = decisionTree(sensor_data)
+    end = time.time()
+    print("Total time taken for 20 loops: " + str(end-start) + " seconds")
     print(decisionTreeLabel)
     return jsonify({'decision_tree_label' : decisionTreeLabel})
 
-def arima():
+def arima(arima_return_value):
     train = current_array[0:train_size]
     #test = current_array[train_size:test_size]
-    model = ARIMA(train, order=(1,1,5))
+    model = ARIMA(train, order=ARIMA_PARAMETERS)
     model_fit = model.fit()
     forecast = model_fit.forecast(steps=NUMBER_OF_FORECAST_STEPS)
     max_forecast = max(forecast)
     max_forecast_2deci = float("{:.2f}".format(max_forecast))
+    arima_return_value.value = max_forecast_2deci
+    #return jsonify(max_forecast_2deci)
+
+def ses(ses_return_value):
+    train = current_array[0:train_size]
+    model_fit = SimpleExpSmoothing(train, initialization_method="estimated").fit()
+    ses_forecast = model_fit.forecast(NUMBER_OF_FORECAST_STEPS)
+    max_forecast = max(ses_forecast)
+    max_forecast_2deci = float("{:.2f}".format(max_forecast))
+    ses_return_value.value = max_forecast_2deci
+    #return jsonify(max_forecast_2deci)
+
+def holt(holt_return_value):
+    train = current_array[0:train_size]
+    #test = current_array[train_size:test_size]
+    model_fit = SimpleExpSmoothing(train, initialization_method="estimated").fit()
+    holt_forecast = model_fit.forecast(NUMBER_OF_FORECAST_STEPS)
+    max_forecast = max(holt_forecast)
+    max_forecast_2deci = float("{:.2f}".format(max_forecast))
+    holt_return_value.value = max_forecast_2deci
+    #return jsonify(max_forecast_2deci)
+
+def lstm():
+    train = current_array[0:train_size]
+    test = current_array[train_size:test_size]
+    model.fit(train, train, epochs=10, batch_size=300, verbose=0)
+    yhat = model.predict(test,verbose=0)
+    #print(yhat[-1])
+    max_forecast = np.max(yhat[-1])
+    max_forecast_2deci = float("{:.2f}".format(max_forecast))
+    #print("LSTM:" + str(max_forecast_2deci))
+    #return_value.value = max_forecast_2deci
     return jsonify(max_forecast_2deci)
+
 
 def decisionTree(sensor_wbgt):
     df_clean_data = df.copy()
@@ -139,4 +223,12 @@ def decisionTree(sensor_wbgt):
     return decisionTreeWbgt
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0")
+    model = Sequential()
+    model.add(LSTM(128, activation='relu', input_shape=(5,1), return_sequences=True))
+    model.add(LSTM(64, activation='relu', return_sequences=False))
+    model.add(RepeatVector(5))
+    model.add(LSTM(64, activation='relu', return_sequences=True))
+    model.add(LSTM(128, activation='relu', return_sequences=True))
+    model.add(TimeDistributed(Dense(1)))
+    model.compile(optimizer='adam', loss='mse')
+    app.run(host="0.0.0.0")
