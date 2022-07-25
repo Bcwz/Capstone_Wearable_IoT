@@ -26,16 +26,18 @@ class WBGT:
 
         # WBGT = 0.7 * Tw + 0.3 * T
         wbgt = 0.7 * tw + 0.3 * temperature
-        print("WBGT = " + str(wbgt))
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        print("WBGT = " + str(wbgt) + " \nDatetime " + dt_string)
         
         return wbgt
     
     def risk_level(wbgt):
         now = datetime.now()
-        if(wbgt>=float(risk_high_red)):            
+        if(float(wbgt)>=float(risk_high_red)):            
             print("HIGH RISK ALERT", now,"\n")
             subprocess.call(TURN_ON_USB,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        elif (wbgt>=float(risk_medium_yellow) and wbgt <float(risk_high_red)):
+        elif (float(wbgt)>=float(risk_medium_yellow) and float(wbgt) <float(risk_high_red)):
             print("MEDIUM RISK ALERT",now,"\n")
             subprocess.call(TURN_ON_USB,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         else:

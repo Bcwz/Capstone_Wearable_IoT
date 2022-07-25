@@ -4,6 +4,7 @@ import time
 import subprocess
 import atexit
 import requests
+import csv
 
 from dotenv import load_dotenv
 from datetime import datetime
@@ -16,14 +17,16 @@ from Connectivity.connectivity import CONNECTIVITY
 
 load_dotenv()
 MONGODB_URL = os.getenv('MONGODB_BASEURL')
-POLLING_RATE_SECONDS = 2
+POLLING_RATE_SECONDS = 5
 data_pin = 24
 TURN_OFF_USB = './uhubctl/turnoff.sh'
-SERVER_IP = '172.20.10.6'
+#SERVER_IP = '172.20.10.6'
+SERVER_IP = '192.168.86.29'
 SERVER_PORT = 5000
-SERVER_FORECAST_ENDPOINT = 'http://172.20.10.6:5000/forecast'
-SENSOR_DATA_ENDPOINT = 'http://172.20.10.6:5000/sensor_data'
-
+#SERVER_FORECAST_ENDPOINT = 'http://172.20.10.6:5000/forecast'
+#SENSOR_DATA_ENDPOINT = 'http://172.20.10.6:5000/sensor_data'
+SERVER_FORECAST_ENDPOINT = 'http://192.168.86.29:5000/forecast'
+SENSOR_DATA_ENDPOINT = 'http://192.168.86.29:5000/sensor_data'
 
 def main():
     while True:
@@ -36,24 +39,27 @@ def main():
             status = CONNECTIVITY.check_connectivity(SERVER_IP,SERVER_PORT)
             
             if(status == True):
+                print("INTERNET TRUE")
                 wbgt = WBGT.calculate(temperature,humidity)
                 wbgt_float = float("{:.2f}".format(wbgt))
                 sensor_data = requests.post(SENSOR_DATA_ENDPOINT, json={'sensor_wbgt':wbgt_float})
                 forecast_wbgt = requests.get(SERVER_FORECAST_ENDPOINT)
-                #print("INTERNET TRUE= " + str(wbgt_float))
                 print(forecast_wbgt.json()["forecast_wbgt"])
-                
+                forecast_wbgt_float = float(forecast_wbgt.json()["forecast_wbgt"])
+                WBGT.risk_level(forecast_wbgt_float)                
             else:
                 #Pass in temp & humidity to calculate Wet-Bulb Globe Temperature, using WBGT = 0.7 * Tw + 0.3 * T
+                print("INTERNET FALSE")  
                 wbgt = WBGT.calculate(temperature,humidity)
                 wbgt_float = float("{:.2f}".format(wbgt))
                 WBGT.risk_level(wbgt_float)
-                print("INTERNET FALSE = " + str(wbgt_float))               
+                             
             
             time.sleep(POLLING_RATE_SECONDS)
         except Exception as e:
             print(e)
             continue
+
 
 def exit_program():
     subprocess.call(TURN_OFF_USB)
