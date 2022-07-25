@@ -17,7 +17,7 @@ from Connectivity.connectivity import CONNECTIVITY
 
 load_dotenv()
 MONGODB_URL = os.getenv('MONGODB_BASEURL')
-POLLING_RATE_SECONDS = 5
+POLLING_RATE_SECONDS = 120
 data_pin = 24
 TURN_OFF_USB = './uhubctl/turnoff.sh'
 #SERVER_IP = '172.20.10.6'
