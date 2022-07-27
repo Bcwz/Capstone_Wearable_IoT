@@ -14,6 +14,20 @@
 **Use case and application environment**
 >This project is designed to be used in a military training environment where soliders will be wearing the thermoregulated wearable IoT device to monitor their body temperature for early detection and preventation of heat-releated injuries. These readings are gathered and analyzed to provide on-site medical personnel in-sights on the physical condition of soliders and provide timely medical attention if there is a risk of heat-injury.
 
+**Libraries used (requirements.txt)**
+>1. Adafruit_DHT==1.4.0
+>2. Flask==1.1.2
+>3. keras==2.9.0
+>4. keras_nightly==2.10.0.dev2022072107
+>5. numpy==1.20.2
+>6.paho_mqtt==1.6.1
+>7. pandas==1.2.3
+>8. pymongo==3.11.2
+>9. python-dotenv==0.20.0
+>10. requests==2.25.1
+>11. scikit_learn==1.1.1
+>12. statsmodels==0.13.2
+
 **Protocol Stack**
 >![Capstone - Communication (OSI) Protocol Layer](https://user-images.githubusercontent.com/57914467/178656726-3f486bf7-eefb-4441-b992-09d3c7331339.png)
 >
