@@ -10,20 +10,9 @@
 **Scope**
 >Include 2 groups of devices: 
 >1. Heating, ventilation, and air conditioning (HVAC) with temperature and humidity as a baseline.
->2. Personal Healthcare with any two of body temperature, heartbeat and BPM (Pulse) as a baseline.
->These data collected should be presented as part of the data visualisation module in the back-end portal.
 
 **Use case and application environment**
 >This project is designed to be used in a military training environment where soliders will be wearing the thermoregulated wearable IoT device to monitor their body temperature for early detection and preventation of heat-releated injuries. These readings are gathered and analyzed to provide on-site medical personnel in-sights on the physical condition of soliders and provide timely medical attention if there is a risk of heat-injury.
-
-**Software**:
->1. Python - Version 3.10.1
-
-**Libraries used**
->1. TBD
-
-**Software Architecture Design**
->- TBD
 
 **Protocol Stack**
 >![Capstone - Communication (OSI) Protocol Layer](https://user-images.githubusercontent.com/57914467/178656726-3f486bf7-eefb-4441-b992-09d3c7331339.png)
