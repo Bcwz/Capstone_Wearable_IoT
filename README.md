@@ -4,8 +4,12 @@
 >Detection and prevention of heat-related injuries using real-time health monitoring and thermoregulated wearable IoT. 
 
 
-**Deliverables**
->A working demonstrable portal that shows the integration of at least one non-wearable and one wearable device that provide a data logging (configurable timer) to a back-end portal.
+**Objectives**
+>Research and propose an alternative measurement method to provide an individual assessment to determine if the wearer is at risk of potential heat-related injuries.
+
+>Research and develop an embedded wearable IoT system to provide an assessment to determine if the wearer is at risk of potential heat-related injuries.
+
+>Research and develop an embedded wearable IoT system which incorporates portable cooling equipment to reduce the risk of potential heat-related injuries.
 
 **Scope**
 >Include 2 groups of devices: 
@@ -13,6 +17,14 @@
 
 **Use case and application environment**
 >This project is designed to be used in a military training environment where soliders will be wearing the thermoregulated wearable IoT device to monitor their body temperature for early detection and preventation of heat-releated injuries. These readings are gathered and analyzed to provide on-site medical personnel in-sights on the physical condition of soliders and provide timely medical attention if there is a risk of heat-injury.
+
+**Setup**
+>1. install the required pip libraries using command: pip install -r requirements.txt
+>2. Ensure hardware are connected to GPIO pins and USB according to "Hardware Architecture Design" layout. 
+>3. Modify "SERVER_IP" in main.py to your own local server IP address.
+>4. Modify "SERVER_FORECAST_ENDPOINT" and  "SENSOR_DATA_ENDPOINT" to 'http://[your own server IP]:5000/forecast' and 'http://[your own server IP]:5000/sensor_data'
+>5. Execute main.py on RPI 3b+
+>6. Execute server.py on local server (E.G. Laptop)
 
 **Libraries used (requirements.txt)**
 >1. Adafruit_DHT==1.4.0
