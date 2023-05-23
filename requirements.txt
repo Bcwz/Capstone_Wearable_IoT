@@ -7,6 +7,6 @@ paho_mqtt==1.6.1
 pandas==1.2.3
 pymongo==3.11.2
 python-dotenv==0.20.0
-requests==2.25.1
+requests==2.31.0
 scikit_learn==1.1.1
 statsmodels==0.13.2
